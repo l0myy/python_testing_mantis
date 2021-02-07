@@ -14,8 +14,10 @@ def test_add_project(app):
     view_state = random.choice(["public", "private"])
     project = Project(name=random_string("name", 10), status=status, view_state=view_state,
                       description=random_string("desc", 10))
-    old_projects = app.project.get_projects_list()
+    # old_projects = app.project.get_projects_list()
+    old_projects = app.soap.get_projects_list("administrator", "root")
     app.project.create_new_project(project)
-    new_projects = app.project.get_projects_list()
+    # new_projects = app.project.get_projects_list()
+    new_projects = app.soap.get_projects_list("administrator", "root")
     old_projects.append(project)
     assert sorted(old_projects, key=Project.id_or_max) == sorted(new_projects, key=Project.id_or_max)
